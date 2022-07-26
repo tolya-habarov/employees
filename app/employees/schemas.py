@@ -18,15 +18,15 @@ class EmployeeOut(BaseModel):
 
 
 class EmployeeFilter(BaseModel):
-    min_age: Optional[int] = Field(default=None, gt=0)
-    max_age: Optional[int] = Field(default=None, gt=0)
+    min_age: Optional[int] = Field(default=None, ge=0)
+    max_age: Optional[int] = Field(default=None, ge=0)
     companies: Optional[List[str]] = Field(default=None, min_items=1)
     start_join_date: Optional[dt.datetime] = None
     end_join_date: Optional[dt.datetime] = None
     job_titles: Optional[List[str]] = Field(default=None, min_items=1)
     genders: Optional[List[Gender]] = Field(default=None, min_items=1)
-    min_salary: Optional[int] = Field(default=None, gt=0)
-    max_salary: Optional[int] = Field(default=None, gt=0)
+    min_salary: Optional[int] = Field(default=None, ge=0)
+    max_salary: Optional[int] = Field(default=None, ge=0)
 
     @root_validator()
     def min_age_gt_max_age(cls, values):

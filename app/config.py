@@ -6,4 +6,4 @@ class Config(BaseSettings):
     MONGO_URL: str
 
 
-config = Config()
+config = Config(_env_file='.env')
