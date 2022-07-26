@@ -1,6 +1,23 @@
 version: '3'
 
 services:
+  app:
+    build: .
+    image: employees_app
+    environment:
+      MONGO_URL: mongodb://${MONGO_USERNAME}:${MONGO_PASSWORD}@db:27017
+    command: uvicorn app.main:app --host ${HOST} --port ${PORT}
+    restart: unless-stopped
+    ports:
+      - 8000:8000
+    depends_on:
+      - db
+
+  app_tests:
+    extends: app
+    command: pytest tests
+    restart: 'no'
+
   db:
     image: mongo:5
     environment:
