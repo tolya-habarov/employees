@@ -59,12 +59,11 @@ async def test_get_employees_by_join_date(client: AsyncClient):
     )
     url = app.url_path_for(view.get_employees.__name__)
 
-    response = await client.post(url, data=filter_.json())
+    response = await client.post(url, content=filter_.json())
 
     assert response.status_code == 200, response.json()
     employees = parse_obj_as(List[schemas.EmployeeOut], response.json())
-    # FIXME: join_date string to date in mongo
-    # assert len(employees) != 0
+    assert len(employees) != 0
     for item in employees:
         assert filter_.start_join_date <= item.join_date <= filter_.end_join_date
 
