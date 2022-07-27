@@ -5,6 +5,7 @@ from motor.motor_asyncio import AsyncIOMotorCollection
 
 
 async def get_employees(collection: AsyncIOMotorCollection, **kwargs) -> Sequence[Dict]:
+    """Get employees by filters. See EmployeeFilter for kwargs"""
     filter_ = _get_filter(**kwargs)
     cursor = collection.find(filter_)
     return await cursor.to_list(None)

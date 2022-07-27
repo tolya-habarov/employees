@@ -10,15 +10,18 @@ db = AsyncIOMotorClient(config.MONGO_URL)
 
 
 async def get_db():
+    """Get db client"""
     return db
 
 
 async def get_collection(db_name: str, collection: str) -> AsyncIOMotorCollection:
+    """Get mongo collection"""
     db = await get_db()
     return db[db_name][collection]
 
 
 async def connect():
+    """Check db connection"""
     try:
         await db.admin.command('ping')
         logger.info('Mongo successfully connected')
@@ -27,6 +30,7 @@ async def connect():
 
 
 def disconnect():
+    """Close client connection"""
     if db is not None:
         db.close()
         logger.error('Mongo disconnected')

@@ -7,6 +7,8 @@ Gender = Literal['male', 'female', 'other']
 
 
 class EmployeeOut(BaseModel):
+    """Employee model"""
+
     name: str
     email: EmailStr
     age: int
@@ -18,6 +20,8 @@ class EmployeeOut(BaseModel):
 
 
 class EmployeeFilter(BaseModel):
+    """Filter employee by some fields"""
+
     min_age: Optional[int] = Field(default=None, ge=0)
     max_age: Optional[int] = Field(default=None, ge=0)
     companies: Optional[List[str]] = Field(default=None, min_items=1)
@@ -28,8 +32,25 @@ class EmployeeFilter(BaseModel):
     min_salary: Optional[int] = Field(default=None, ge=0)
     max_salary: Optional[int] = Field(default=None, ge=0)
 
+    class Config:
+        schema_extra = {
+            'example': {
+                'min_age': 10,
+                'max_age': 50,
+                'companies': ['Twitter', 'Yandex', 'Google'],
+                'start_join_date': dt.datetime(1999, 1, 1, 0, 0),
+                'end_join_date': dt.datetime(2005, 1, 1, 0, 0),
+                'job_titles': ['janitor', 'manager', 'developer'],
+                'genders': ['male', 'other'],
+                'min_salary': 1793,
+                'max_salary': 6397,
+            }
+        }
+
     @root_validator()
-    def min_age_gt_max_age(cls, values):
+    def min_gt_max(cls, values):
+        """Check minimum values are less than maximum values"""
+
         if all({values['min_age'], values['max_age']}):
             if values['min_age'] > values['max_age']:
                 raise ValueError('min_age must be less than max_age')
